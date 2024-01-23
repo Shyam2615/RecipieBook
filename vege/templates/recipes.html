@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block start %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow-lg bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Recipe_Book</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+      </ul>
+      <a href="/logout/" class="btn btn-danger">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-3">
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">  <!--enctype is used so that image is stored in db otherwise only text will be stored and also we need to use name to send frontend data to backend -->
+        {% csrf_token %}
+        <h2>Add Recipe</h2>
+        <hr>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Recipe name</label>
+          <input name="recipe_name" required type="text" class="form-control" >
+        </div>
+        <div class="mb-3">
+          <label  class="form-label">Recipe description</label>
+          <textarea name="recipe_description"  required class="form-control" placeholder="Describe your recipe" id="floatingTextarea2" style="height: 100px"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Recipe image</label>
+          <input name="recipe_image" type="file" class="form-control" id="exampleInputPassword1">
+        </div>
+        <button type="submit" class="btn btn-success">Add Recipe</button>
+      </form>
+
+      <h2 class="mx-3 mb-3">Your Recipes</h2>
+
+      <div class=" d-flex mx-auto my-3" style="justify-content: flex-end;">
+        <form class="d-flex" role="search">
+          <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success mx-2" type="submit">Search</button>
+        </form>
+        <a href="http://127.0.0.1:8000" class="btn btn-outline-primary ">Show all</a>
+      </div>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SlNo</th>
+            <th scope="col">recipe_name</th>
+            <th scope="col">recipe_description</th>
+            <th scope="col">recipe_image</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for recipe in recipes %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{recipe.recipe_name}}</td>
+            <td>{{recipe.recipe_description}}</td>
+            <td>
+              <img src="/media/{{recipe.recipe_image}}" alt="No image available" style="height: 100px;" ></td>
+              <td>
+                <a href="/delete-recipes/{{recipe.id}}/" class="btn btn-danger my-2" style="width: 77px;">Delete</a>
+                <a href="/update-recipes/{{recipe.id}}/" class="btn btn-primary " style="width: 77px;">Update</a>
+              </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+</div>
+
+
+{% endblock %}

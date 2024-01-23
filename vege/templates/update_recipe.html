@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block start %}
+
+<div class="container mt-5">
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">  <!--enctype is used so that image is stored in db otherwise only text will be stored and also we need to use name to send frontend data to backend -->
+        {% csrf_token %}
+        <h2>Update Recipe</h2>
+        <hr>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Recipe name</label>
+          <input name="recipe_name" required type="text" value="{{recipe.recipe_name}}" class="form-control" >
+        </div>
+        <div class="mb-3">
+          <label  class="form-label">Recipe description</label>
+          <textarea name="recipe_description"  required class="form-control" placeholder="Describe your recipe" id="floatingTextarea2" style="height: 100px">{{recipe.recipe_description}}</textarea>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Recipe image</label>
+          <input name="recipe_image" type="file"  class="form-control" id="exampleInputPassword1">
+        </div>
+        <button type="submit" class="btn btn-success">Update Recipe</button>
+      </form>
+</div>
+
+{% endblock %}
